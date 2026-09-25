@@ -1,0 +1,27 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Test</title></head><body style="font-family:system-ui;padding:20px">
+<h2>Test Science Islam</h2>
+<div id="city">Chargement...</div>
+<div id="prayer">Prière...</div>
+<div id="countdown" style="background:#16a34a;color:#fff;padding:10px;border-radius:10px;margin:10px 0"></div>
+<div id="temp">Temp...</div>
+<div id="quiz"></div>
+<script>
+let q=[
+{q:"Tawhid Rouboubiya?",a:["Allah seul Créateur","Idoles"],c:0},
+{q:"Combien piliers Islam?",a:["5","3"],c:0}
+],qi=0,qs=0;
+function showQ(){if(qi>=q.length){document.getElementById('quiz').innerHTML="Score "+qs+"/"+q.length;return;}
+let qq=q[qi];document.getElementById('quiz').innerHTML=qq.q+"<br>"+qq.a.map((a,i)=>"<button onclick='ans("+i+")' style='width:100%;padding:10px;margin:5px;border:2px solid #ccc;border-radius:10px'>"+a+"</button>").join('');}
+function ans(i){if(i==q[qi].c)qs++;qi++;showQ();}
+showQ();
+fetch("https://api.open-meteo.com/v1/forecast?latitude=12.6392&longitude=-8.0029&current=temperature_2m&timezone=auto").then(r=>r.json()).then(d=>document.getElementById('temp').innerText=d.current.temperature_2m+"°C Météo réelle Bamako").catch(()=>{});
+navigator.geolocation.getCurrentPosition(p=>{
+let lat=p.coords.latitude,lon=p.coords.longitude;
+document.getElementById('city').innerText="GPS: "+lat.toFixed(2)+","+lon.toFixed(2);
+fetch("https://api.aladhan.com/v1/timings?latitude="+lat+"&longitude="+lon+"&method=4").then(r=>r.json()).then(d=>{
+let t=d.data.timings;document.getElementById('prayer').innerText="Fajr "+t.Fajr+" Asr "+t.Asr;
+let next=t.Asr;let parts=next.split(':');let nd=new Date();nd.setHours(parts[0],parts[1],0,0);
+setInterval(()=>{let diff=nd-new Date();let h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);document.getElementById('countdown').innerText="Dans "+h+"h "+m+"m "+s+"s - Asr prochaine";},1000);
+});
+});
+</script></body></html>
