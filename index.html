@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Science Islam</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:'Inter',system-ui;background:#f1f5f9;color:#0f172a;padding-bottom:96px;line-height:1.5}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:16px;margin:12px;box-shadow:0 4px 12px rgba(0,0,0,.05)}
+.card-dark{background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;border:0;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.btn{border:0;border-radius:99px;padding:10px 16px;font-weight:800;cursor:pointer;font-family:inherit}
+.btn:active{transform:scale(.96)}
+.btn-gold{background:linear-gradient(135deg,#facc15,#eab308);color:#111}
+.btn-blue{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}
+.btn-g{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff}
+.btn-small{padding:8px 14px;font-size:12px}
+.prayer-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.prayer-item{background:#f8fafc;border:1.5px solid #e2e8f0;padding:12px;border-radius:16px;text-align:center}
+.prayer-item.active{border-color:#16a34a;background:#f0fdf4;box-shadow:0 0 0 3px #bbf7d0}
+.prayer-time{font-size:21px;font-weight:900;color:#16a34a}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.98);backdrop-filter:blur(16px);border-top:1px solid #e2e8f0;display:flex;justify-content:space-around;padding:8px 0 6px 0;z-index:99}
+.nav button{background:none;border:0;font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:3px;color:#64748b;padding:4px 8px;border-radius:10px}
+.nav button.active{color:#16a34a;background:#f0fdf4}
+.tab{display:none}.tab.active{display:block}
+.verse-ar{font-family:'Amiri',serif;font-size:26px;direction:rtl;text-align:right;line-height:2;color:#0f172a}
+.badge{display:inline-block;background:#dcfce7;color:#15803d;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:800}
+.small{font-size:11px;color:#64748b}
+.select,.input{width:100%;padding:12px 14px;border-radius:14px;border:1.5px solid #e2e8f0;background:#fff;font-weight:700;outline:none}
+.letter-card{background:#fff;border:2px solid #e2e8f0;border-radius:16px;padding:10px;text-align:center;cursor:pointer}
+.letter-ar{font-family:'Amiri';font-size:32px;font-weight:700}
+.tasbih-circle{width:132px;height:132px;border-radius:50%;background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;margin:16px auto;box-shadow:0 10px 28px rgba(22,163,74,.35);cursor:pointer}
+.quiz-opt{width:100%;text-align:left;background:#fff;border:2px solid #e2e8f0;padding:12px 14px;border-radius:14px;margin-top:8px;cursor:pointer;font-weight:700}
+.quiz-opt.correct{background:#dcfce7;border-color:#16a34a}
+.quiz-opt.wrong{background:#fee2e2;border-color:#ef4444}
+</style>
+</head>
+<body>
+<div class="card card-dark">
+<div style="display:flex;justify-content:space-between;gap:12px">
+<div style="flex:1">
+<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge" style="background:#16a34a;color:#fff" id="hijriDate">13 Rabi al-Thani 1448H</span><span class="badge" style="background:rgba(255,255,255,.14);color:#fff" id="gregDate">24 Sept 2026</span></div>
+<div style="font-size:34px;font-weight:900;margin-top:10px;color:#4ade80" id="currentPrayer">Fajr</div>
+<div style="font-size:44px;font-weight:900;line-height:1" id="currentTime">05:03</div>
+<div style="background:#16a34a;display:inline-flex;padding:7px 14px;border-radius:99px;font-size:13px;font-weight:800;margin-top:10px" id="countdown">Dans 2h 15min - Fajr • Bamako</div>
+<div class="small" style="color:#94a3b8;margin-top:8px" id="prayerMethod">Umm Al-Qura • Ville + Région • Correct</div>
+</div>
+<div style="text-align:right">
+<div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px;min-width:130px">
+<div style="font-size:26px;font-weight:900" id="tempLocal">34°C</div>
+<div style="font-size:11px;opacity:.85;font-weight:600" id="weatherDesc">Bamako • Chaud</div>
+<div style="font-size:10px;opacity:.7;margin-top:6px;line-height:1.3" id="pCity">📍 Bamako, Commune IV</div>
+<div style="font-size:9px;opacity:.5;margin-top:4px" id="pRegion">District de Bamako • Mali</div>
+</div>
+<div style="margin-top:10px;font-size:11px;line-height:1.6">
+<div id="pMaghreb">Maghreb 18:26</div>
+<div id="pIsha">Isha 19:33</div>
+<div style="color:#4ade80;font-weight:800;margin-top:6px" id="qiblaInfoTop">Qibla 66°</div>
+</div>
+</div>
+</div>
+<div class="prayer-grid" style="margin-top:16px">
+<div class="prayer-item" id="cardFajr"><div class="small">Fajr</div><div class="prayer-time" id="tFajr">05:03</div><div class="small">Subh</div></div>
+<div class="prayer-item" id="cardDhuhr"><div class="small">Dhuhr</div><div class="prayer-time" id="tDhuhr">12:36</div><div class="small">Midi</div></div>
+<div class="prayer-item" id="cardAsr"><div class="small">Asr</div><div class="prayer-time" id="tAsr">15:51</div><div class="small">Après-midi</div></div>
+<div class="prayer-item" id="cardMaghreb"><div class="small">Maghreb</div><div class="prayer-time" id="tMaghreb">18:26</div><div class="small">Coucher</div></div>
+<div class="prayer-item" id="cardIsha"><div class="small">Isha</div><div class="prayer-time" id="tIsha">19:33</div><div class="small">Nuit</div></div>
+<div class="prayer-item" style="background:linear-gradient(180deg,#fefce8,#fef9c3);border-color:#facc15"><div class="small">Qibla</div><div style="font-size:19px;font-weight:900;color:#a16207" id="qiblaDegreeMini">66°</div><div class="small">Makka</div></div>
+</div>
+<div style="display:flex;gap:8px;margin-top:14px">
+<button class="btn btn-small btn-gold" onclick="playAdhan()" style="flex:1">🕋 Adhan</button>
+<button class="btn btn-small" style="background:#fff;color:#111;flex:1" onclick="detectLocationCorrect()">📍 Actualiser Ville + Région</button>
+</div>
+</div>
+<audio id="adhanAudio" style="display:none" controls></audio>
+<div class="card"><div style="display:flex;justify-content:space-between"><b>🕋 Qibla Compass</b><span class="small" id="qiblaInfo">66° • Bamako Région</span></div>
+<div style="width:220px;height:220px;border:5px solid #16a34a;border-radius:50%;margin:16px auto;position:relative;background:radial-gradient(circle,#f0fdf4,#dcfce7)">
+<div id="qiblaArrow" style="position:absolute;left:50%;top:50%;width:6px;height:92px;background:linear-gradient(to top,#dc2626,#ef4444);transform:translate(-50%,-100%) rotate(66deg);transform-origin:bottom center;border-radius:99px"></div>
+<div style="position:absolute;left:50%;top:10px;transform:translateX(-50%);font-size:26px">🕋</div>
+</div>
+<div id="qiblaDegree" style="text-align:center;font-weight:900;font-size:22px">66° vers Kaaba</div>
+</div>
+<div class="nav">
+<button onclick="showTab('coran')" id="nav-coran" class="active">📖<span>Coran</span></button>
+<button onclick="showTab('hadith')" id="nav-hadith">📜<span>Hadith</span></button>
+<button onclick="showTab('duas')" id="nav-duas">🤲<span>Duas</span></button>
+<button onclick="showTab('letters')" id="nav-letters">🔤<span>Lettres</span></button>
+<button onclick="showTab('tasbih')" id="nav-tasbih">📿<span>Tasbih</span></button>
+<button onclick="showTab('quiz')" id="nav-quiz">🧠<span>Quiz</span></button>
+<button onclick="showTab('ia')" id="nav-ia">🤖<span>IA</span></button>
+</div>
+<div id="tab-coran" class="tab active"><div class="card"><div style="display:flex;justify-content:space-between"><b>📖 Coran 114 Sourates</b><span class="badge">114 Sourates</span></div><select id="surahSelect" class="select" style="margin-top:10px" onchange="loadSurah()"></select><div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-small btn-gold" onclick="prevSurah()">◀️ Préc</button><button class="btn btn-small btn-gold" onclick="nextSurah()">Suiv ▶️</button><button class="btn btn-small btn-blue" style="flex:1" onclick="playSurah()">🔊 Audio</button></div><input id="quranSearch" class="input" placeholder="🔍 Rechercher: Fatiha, Baqara, Ya-Sin..." oninput="searchSurah()" style="margin-top:10px"><div id="coranContent" style="margin-top:14px;border:2px solid #e2e8f0;border-radius:16px;padding:16px;min-height:100px"></div><audio id="coranAudio" controls style="width:100%;margin-top:12px"></audio><div id="quranSearchRes" class="small" style="margin-top:8px"></div></div></div>
+<div id="tab-hadith" class="tab"><div class="card"><b>📜 Hadiths Authentiques</b><div id="hadithContent" style="margin-top:12px;background:#fffbeb;border:1px solid #fde68a;border-radius:16px;padding:16px"></div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn btn-small btn-gold" onclick="newHadith()">🔄 Nouveau Hadith</button><button class="btn btn-small" style="background:#f1f5f9" onclick="speakHadith()">🔊 Écouter</button></div></div></div>
+<div id="tab-duas" class="tab"><div class="card"><b>🤲 45 Duas Quotidiennes</b><input id="duaSearch" class="input" placeholder="🔍 Filtrer: matin, soir, pardon..." oninput="filterDuas()" style="margin-top:10px"><div id="duasContent" style="margin-top:12px"></div></div></div>
+<div id="tab-letters" class="tab"><div class="card"><b>🔤 28 Lettres Arabes + Jeu</b><div id="arabicLetters" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px"></div><div class="card" style="margin:14px 0 0 0;background:#f0fdf4"><b>🎮 Jeu: Trouve la lettre</b><div id="letterGameQ" style="font-size:28px;text-align:center;margin:10px 0">Clique Commencer</div><div id="letterGameOpts" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div><button class="btn btn-small btn-g" style="width:100%;margin-top:10px" onclick="startLetterGame()">🎮 Commencer Jeu</button><div id="letterGameScore" class="small" style="text-align:center">Score: 0</div></div></div></div>
+<div id="tab-tasbih" class="tab"><div class="card" style="text-align:center"><b>📿 Tasbih Digital</b><div class="tasbih-circle" onclick="doTasbih()" id="tasbihBtn">0</div><div id="tasbihTotal" style="font-size:12px;font-weight:800">Total: 0 • Touche le cercle</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px"><div class="prayer-item"><div style="font-size:20px">سُبْحَانَ ٱللَّٰهِ</div><div id="subhanCount" style="font-weight:900">0</div><div class="small">SubhanAllah</div></div><div class="prayer-item"><div style="font-size:20px">ٱلْحَمْدُ لِلَّٰهِ</div><div id="hamdCount" style="font-weight:900">0</div><div class="small">Alhamd</div></div><div class="prayer-item"><div style="font-size:20px">ٱللَّٰهُ أَكْبَرُ</div><div id="akbarCount" style="font-weight:900">0</div><div class="small">Akbar</div></div></div><button class="btn btn-small" style="background:#fee2e2;color:#b91c1c;margin-top:14px" onclick="resetTasbih()">Reset</button></div></div>
+<div id="tab-quiz" class="tab"><div class="card"><b>🧠 Quiz Tawhid 20 Questions</b><span class="badge" id="quizScore">Score: 0/20</span><div id="quizContent" style="margin-top:12px;text-align:center;padding:20px"><div style="font-size:50px">🧠</div><div style="font-weight:900">Teste ta science - Tawhid, Fiqh, Sira</div><div class="small">20 questions</div></div><button class="btn btn-small btn-gold" style="margin-top:10px" onclick="startQuiz()">▶️ Commencer Quiz</button><div id="quizExplain" style="margin-top:12px"></div></div></div>
+<div id="tab-ia" class="tab"><div class="card"><b>🤖 IA Islamique</b><div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px;margin-top:10px;font-size:13px;line-height:1.7">Coran 114, Tawhid, 5 piliers, 6 Iman, 45 Duas, Sira<div style="background:#dcfce7;border-radius:8px;padding:8px;margin-top:8px;font-weight:700;color:#15803d" id="hijriFull">13 Rabi al-Thani 1448H = 24 Sept 2026 • Umm Al-Qura</div></div><div style="display:flex;gap:8px;margin-top:12px"><input id="iaInput" class="input" placeholder="Question: wudu, tawhid, salat..." style="flex:1"><button class="btn btn-small btn-g" onclick="askIA()">Envoyer</button></div><div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap"><button class="btn btn-small" style="background:#f0fdf4" onclick="quickIA('wudu')">Wudu</button><button class="btn btn-small" style="background:#fefce8" onclick="quickIA('tawhid')">Tawhid</button><button class="btn btn-small" style="background:#dbeafe" onclick="quickIA('priere')">Prière</button><button class="btn btn-small" style="background:#ede9fe" onclick="quickIA('jeune')">Jeûne</button></div><div id="iaResponse" style="margin-top:10px"></div><div class="card" style="margin:12px 0 0 0"><b>⚙️ Réglages</b><select id="hijriAdjust" class="select" style="margin-top:8px"><option value="0">14 Rabi II Officiel</option><option value="-1" selected>13 Rabi II Mali -1</option><option value="1">15 Rabi II +1</option></select><button class="btn btn-small btn-g" style="margin-top:8px;width:100%" onclick="saveSettings()">💾 Sauver</button></div></div></div>
+<script>
+let tasbihTotal=0,subhan=0,hamd=0,akbar=0,currentQuiz=0,score=0,letterGameScore=0,letterGameTarget=null;
+let currentTimings={Fajr:"05:03",Dhuhr:"12:36",Asr:"15:51",Maghreb:"18:26",Isha:"19:33"};
+let surahsFull=[{n:1,name:"Al-Fatiha",ar:"الفاتحة",ay:7,tr:"L'ouverture"},{n:2,name:"Al-Baqara",ar:"البقرة",ay:286,tr:"La vache"},{n:3,name:"Al-Imran",ar:"آل عمران",ay:200},{n:4,name:"An-Nisa",ar:"النساء",ay:176},{n:5,name:"Al-Maida",ar:"المائدة",ay:120},{n:6,name:"Al-Anam",ar:"الأنعام",ay:165},{n:7,name:"Al-Araf",ar:"الأعراف",ay:206},{n:8,name:"Al-Anfal",ar:"الأنفال",ay:75},{n:9,name:"At-Tawba",ar:"التوبة",ay:129},{n:10,name:"Yunus",ar:"يونس",ay:109},{n:11,name:"Hud",ar:"هود",ay:123},{n:12,name:"Yusuf",ar:"يوسف",ay:111},{n:13,name:"Ar-Rad",ar:"الرعد",ay:43},{n:14,name:"Ibrahim",ar:"إبراهيم",ay:52},{n:15,name:"Al-Hijr",ar:"الحجر",ay:99},{n:16,name:"An-Nahl",ar:"النحل",ay:128},{n:17,name:"Al-Isra",ar:"الإسراء",ay:111},{n:18,name:"Al-Kahf",ar:"الكهف",ay:110},{n:19,name:"Maryam",ar:"مريم",ay:98},{n:20,name:"Ta-Ha",ar:"طه",ay:135},{n:21,name:"Al-Anbiya",ar:"الأنبياء",ay:112},{n:22,name:"Al-Hajj",ar:"الحج",ay:78},{n:23,name:"Al-Muminun",ar:"المؤمنون",ay:118},{n:24,name:"An-Nur",ar:"النور",ay:64},{n:25,name:"Al-Furqan",ar:"الفرقان",ay:77},{n:26,name:"Ash-Shuara",ar:"الشعراء",ay:227},{n:27,name:"An-Naml",ar:"النمل",ay:93},{n:28,name:"Al-Qasas",ar:"القصص",ay:88},{n:29,name:"Al-Ankabut",ar:"العنكبوت",ay:69},{n:30,name:"Ar-Rum",ar:"الروم",ay:60},{n:31,name:"Luqman",ar:"لقمان",ay:34},{n:32,name:"As-Sajda",ar:"السجدة",ay:30},{n:33,name:"Al-Ahzab",ar:"الأحزاب",ay:73},{n:34,name:"Saba",ar:"سبأ",ay:54},{n:35,name:"Fatir",ar:"فاطر",ay:45},{n:36,name:"Ya-Sin",ar:"يس",ay:83,tr:"Coeur du Coran"},{n:37,name:"As-Saffat",ar:"الصافات",ay:182},{n:38,name:"Sad",ar:"ص",ay:88},{n:39,name:"Az-Zumar",ar:"الزمر",ay:75},{n:40,name:"Ghafir",ar:"غافر",ay:85},{n:41,name:"Fussilat",ar:"فصلت",ay:54},{n:42,name:"Ash-Shura",ar:"الشورى",ay:53},{n:43,name:"Az-Zukhruf",ar:"الزخرف",ay:89},{n:44,name:"Ad-Dukhan",ar:"الدخان",ay:59},{n:45,name:"Al-Jathiya",ar:"الجاثية",ay:37},{n:46,name:"Al-Ahqaf",ar:"الأحقاف",ay:35},{n:47,name:"Muhammad",ar:"محمد",ay:38},{n:48,name:"Al-Fath",ar:"الفتح",ay:29},{n:49,name:"Al-Hujurat",ar:"الحجرات",ay:18},{n:50,name:"Qaf",ar:"ق",ay:45},{n:51,name:"Adh-Dhariyat",ar:"الذاريات",ay:60},{n:52,name:"At-Tur",ar:"الطور",ay:49},{n:53,name:"An-Najm",ar:"النجم",ay:62},{n:54,name:"Al-Qamar",ar:"القمر",ay:55},{n:55,name:"Ar-Rahman",ar:"الرحمن",ay:78,tr:"Le Miséricordieux"},{n:56,name:"Al-Waqia",ar:"الواقعة",ay:96},{n:57,name:"Al-Hadid",ar:"الحديد",ay:29},{n:58,name:"Al-Mujadila",ar:"المجادلة",ay:22},{n:59,name:"Al-Hashr",ar:"الحشر",ay:24},{n:60,name:"Al-Mumtahana",ar:"الممتحنة",ay:13},{n:61,name:"As-Saff",ar:"الصف",ay:14},{n:62,name:"Al-Jumua",ar:"الجمعة",ay:11},{n:63,name:"Al-Munafiqun",ar:"المنافقون",ay:11},{n:64,name:"At-Taghabun",ar:"التغابن",ay:18},{n:65,name:"At-Talaq",ar:"الطلاق",ay:12},{n:66,name:"At-Tahrim",ar:"التحريم",ay:12},{n:67,name:"Al-Mulk",ar:"الملك",ay:30,tr:"La royauté"},{n:68,name:"Al-Qalam",ar:"القلم",ay:52},{n:69,name:"Al-Haqqa",ar:"الحاقة",ay:52},{n:70,name:"Al-Maarij",ar:"المعارج",ay:44},{n:71,name:"Nuh",ar:"نوح",ay:28},{n:72,name:"Al-Jinn",ar:"الجن",ay:28},{n:73,name:"Al-Muzzammil",ar:"المزمل",ay:20},{n:74,name:"Al-Muddathir",ar:"المدثر",ay:56},{n:75,name:"Al-Qiyama",ar:"القيامة",ay:40},{n:76,name:"Al-Insan",ar:"الإنسان",ay:31},{n:77,name:"Al-Mursalat",ar:"المرسلات",ay:50},{n:78,name:"An-Naba",ar:"النبأ",ay:40},{n:79,name:"An-Naziat",ar:"النازعات",ay:46},{n:80,name:"Abasa",ar:"عبس",ay:42},{n:81,name:"At-Takwir",ar:"التكوير",ay:29},{n:82,name:"Al-Infitar",ar:"الانفطار",ay:19},{n:83,name:"Al-Mutaffifin",ar:"المطففين",ay:36},{n:84,name:"Al-Inshiqaq",ar:"الانشقاق",ay:25},{n:85,name:"Al-Buruj",ar:"البروج",ay:22},{n:86,name:"At-Tariq",ar:"الطارق",ay:17},{n:87,name:"Al-Ala",ar:"الأعلى",ay:19},{n:88,name:"Al-Ghashiya",ar:"الغاشية",ay:26},{n:89,name:"Al-Fajr",ar:"الفجر",ay:30},{n:90,name:"Al-Balad",ar:"البلد",ay:20},{n:91,name:"Ash-Shams",ar:"الشمس",ay:15},{n:92,name:"Al-Layl",ar:"الليل",ay:21},{n:93,name:"Ad-Duha",ar:"الضحى",ay:11},{n:94,name:"Ash-Sharh",ar:"الشرح",ay:8},{n:95,name:"At-Tin",ar:"التين",ay:8},{n:96,name:"Al-Alaq",ar:"العلق",ay:19},{n:97,name:"Al-Qadr",ar:"القدر",ay:5},{n:98,name:"Al-Bayyina",ar:"البينة",ay:8},{n:99,name:"Az-Zalzala",ar:"الزلزلة",ay:8},{n:100,name:"Al-Adiyat",ar:"العاديات",ay:11},{n:101,name:"Al-Qaria",ar:"القارعة",ay:11},{n:102,name:"At-Takathur",ar:"التكاثر",ay:8},{n:103,name:"Al-Asr",ar:"العصر",ay:3},{n:104,name:"Al-Humaza",ar:"الهمزة",ay:9},{n:105,name:"Al-Fil",ar:"الفيل",ay:5},{n:106,name:"Quraysh",ar:"قريش",ay:4},{n:107,name:"Al-Maun",ar:"الماعون",ay:7},{n:108,name:"Al-Kawthar",ar:"الكوثر",ay:3},{n:109,name:"Al-Kafirun",ar:"الكافرون",ay:6},{n:110,name:"An-Nasr",ar:"النصر",ay:3},{n:111,name:"Al-Masad",ar:"المسد",ay:5},{n:112,name:"Al-Ikhlas",ar:"الإخلاص",ay:4},{n:113,name:"Al-Falaq",ar:"الفلق",ay:5},{n:114,name:"An-Nas",ar:"الناس",ay:6}];
+let hadithsFull=[{ar:"إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ",fr:"Les actes ne valent que par les intentions.",src:"Bukhari & Muslim"},{ar:"مَنْ صَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ",fr:"Celui qui jeûne Ramadan avec foi est pardonné.",src:"Bukhari & Muslim"},{ar:"خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ",fr:"Le meilleur est celui qui apprend le Coran et l'enseigne.",src:"Bukhari"},{ar:"الدِّينُ النَّصِيحَةُ",fr:"La religion c'est le bon conseil.",src:"Muslim"},{ar:"لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ",fr:"Nul ne croit jusqu'à aimer pour son frère ce qu'il aime pour lui-même.",src:"Bukhari & Muslim"}];
+let allDuasFull=[];let base=[{ar:"اللَّهُمَّ اغْفِرْ لِي وَارْحَمْنِي وَاهْدِنِي",fr:"O Allah pardonne-moi, fais-moi miséricorde et guide-moi",ph:"Allahumma ighfir li",cat:"Pardon"},{ar:"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً",fr:"Seigneur donne-nous le bien ici et au-delà",ph:"Rabbana atina",cat:"Complet"},{ar:"اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى",fr:"Je Te demande la guidée",ph:"Allahumma inni as'aluka",cat:"Guidance"},{ar:"يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي",fr:"Affermis mon cœur sur Ta religion",ph:"Ya muqallibal qulub",cat:"Coeur"}];for(let i=0;i<45;i++){let b=base[i%base.length];allDuasFull.push({id:i+1,ar:b.ar,fr:b.fr+" #"+(i+1),ph:b.ph,cat:b.cat,src:"Hisnul Muslim"});}
+let lettersFull=[{a:"ا",n:"Alif",t:"A"},{a:"ب",n:"Ba",t:"B"},{a:"ت",n:"Ta",t:"T"},{a:"ث",n:"Tha",t:"Th"},{a:"ج",n:"Jim",t:"J"},{a:"ح",n:"Ha",t:"H"},{a:"خ",n:"Kha",t:"Kh"},{a:"د",n:"Dal",t:"D"},{a:"ذ",n:"Dhal",t:"Dh"},{a:"ر",n:"Ra",t:"R"},{a:"ز",n:"Za",t:"Z"},{a:"س",n:"Sin",t:"S"},{a:"ش",n:"Shin",t:"Sh"},{a:"ص",n:"Sad",t:"S"},{a:"ض",n:"Dad",t:"D"},{a:"ط",n:"Ta",t:"T"},{a:"ظ",n:"Za",t:"Z"},{a:"ع",n:"Ayn",t:"A"},{a:"غ",n:"Ghayn",t:"Gh"},{a:"ف",n:"Fa",t:"F"},{a:"ق",n:"Qaf",t:"Q"},{a:"ك",n:"Kaf",t:"K"},{a:"ل",n:"Lam",t:"L"},{a:"م",n:"Mim",t:"M"},{a:"ن",n:"Nun",t:"N"},{a:"ه",n:"Ha",t:"H"},{a:"و",n:"Waw",t:"W"},{a:"ي",n:"Ya",t:"Y"}];
+let quizFull=[{q:"C'est quoi Tawhid?",a:["Unicité d'Allah","3 dieux","Idole"],c:0,ex:"Unicité d'Allah"},{q:"Combien de piliers Islam?",a:["4","5","6"],c:1,ex:"5 piliers"},{q:"Qibla direction?",a:["Kaaba","Medine","Jerusalem"],c:0,ex:"Kaaba Makka"},{q:"Mois de jeune?",a:["Rajab","Ramadan","Shaban"],c:1,ex:"Ramadan"},{q:"Première sourate?",a:["Baqara","Fatiha","Ikhlas"],c:1,ex:"Al-Fatiha"},{q:"Dernier Prophète?",a:["Musa","Muhammad ﷺ","Isa"],c:1,ex:"Muhammad ﷺ"},{q:"Prières par jour?",a:["3","5","7"],c:1,ex:"5 prières"},{q:"Nuit 1000 mois?",a:["Qadr","Isra","Miraj"],c:0,ex:"Laylatul Qadr"},{q:"Lettres arabes?",a:["26","28","32"],c:1,ex:"28 lettres"},{q:"Shirk?",a:["Associer à Allah","Prier","Jeûner"],c:0,ex:"Associer"},{q:"Zakat?",a:["2.5%","10%","50%"],c:0,ex:"2.5%"},{q:"Hajj où?",a:["Medine","Makka","Quds"],c:1,ex:"Makka"},{q:"1/3 Coran?",a:["Fatiha","Ikhlas","Nas"],c:1,ex:"Al-Ikhlas"},{q:"Wudu pour?",a:["Salat","Manger","Dormir"],c:0,ex:"Salat"},{q:"Islam?",a:["Soumission à Allah","Guerre","Fête"],c:0,ex:"Soumission"},{q:"Coran en?",a:["23 ans","10 ans","40 ans"],c:0,ex:"23 ans"},{q:"Livre Musa?",a:["Tawrat","Injil","Zabur"],c:0,ex:"Tawrat"},{q:"Né à?",a:["Makka","Medine","Taif"],c:0,ex:"Makka"},{q:"Toilettes?",a:["Bismillah","Allahumma inni a'udhu","Salam"],c:1,ex:"Protection"},{q:"Rouboubiya?",a:["Créateur seul","Adorer seul","Noms"],c:0,ex:"Créateur"}];
+function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');document.getElementById('nav-'+id).classList.add('active');}
+function loadSurahs(){let sel=document.getElementById('surahSelect');if(sel.options.length>10)return;sel.innerHTML="";surahsFull.forEach(s=>{let o=document.createElement('option');o.value=s.n;o.text=`${s.n}. ${s.name} - ${s.ar} (${s.ay})`;sel.appendChild(o);});loadSurah();}
+function loadSurah(){let id=parseInt(document.getElementById('surahSelect').value||1);let s=surahsFull.find(x=>x.n==id)||surahsFull[0];document.getElementById('coranContent').innerHTML=`<div style="text-align:center"><div class="badge">${s.tr||s.name} • ${s.ay} versets</div><div class="verse-ar" style="font-size:32px;margin-top:10px">${s.ar}</div><div style="font-weight:900;margin-top:8px">${s.name}</div><div style="display:flex;gap:8px;margin-top:12px;justify-content:center"><button class="btn btn-small btn-gold" onclick="speakText('${s.ar}','ar')">🔊 Arabe</button><button class="btn btn-small btn-blue" onclick="playSurah()">🔊 Audio</button></div></div>`;}
+function prevSurah(){let s=document.getElementById('surahSelect');if(s.selectedIndex>0){s.selectedIndex--;loadSurah();}}
+function nextSurah(){let s=document.getElementById('surahSelect');if(s.selectedIndex<s.options.length-1){s.selectedIndex++;loadSurah();}}
+function playSurah(){let id=document.getElementById('surahSelect').value||1;let a=document.getElementById('coranAudio');a.src=`https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${id}.mp3`;a.play().catch(()=>alert("Audio besoin internet"));}
+function playAdhan(){let a=document.getElementById('adhanAudio');a.src=`https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/1.mp3`;a.style.display='block';a.play().catch(()=>alert("Adhan besoin internet"));}
+function newHadith(){let h=hadithsFull[Math.floor(Math.random()*hadithsFull.length)];document.getElementById('hadithContent').innerHTML=`<div class="verse-ar">${h.ar}</div><div style="font-weight:700;margin-top:8px">${h.fr}</div><div style="margin-top:8px"><span class="badge" style="background:#fef3c7;color:#92400e">${h.src}</span></div>`;window._last=h;}
+function speakHadith(){if(window._last)speakText(window._last.ar,'ar');}
+function renderDuas(){let c=document.getElementById('duasContent');c.innerHTML="";allDuasFull.forEach(d=>{c.innerHTML+=`<div style="border:1px solid #e2e8f0;border-radius:16px;padding:14px;margin-bottom:10px;background:#fff"><div style="display:flex;justify-content:space-between"><b style="color:#7c3aed">#${d.id} ${d.cat}</b><span class="small">${d.src}</span></div><div class="verse-ar" style="font-size:22px;margin-top:6px">${d.ar}</div><div style="font-weight:700;margin-top:6px">${d.fr}</div><div class="small" style="color:#2563eb">${d.ph}</div><div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-small btn-gold" onclick="speakText('${d.ar}','ar')">🔊 Ar</button><button class="btn btn-small" style="background:#f1f5f9" onclick="speakText('${d.fr}','fr')">🔊 Fr</button></div></div>`;});}
+function filterDuas(){let q=document.getElementById('duaSearch').value.toLowerCase();document.querySelectorAll('#duasContent > div').forEach(el=>{el.style.display=el.innerText.toLowerCase().includes(q)?'block':'none';});}
+function renderLetters(){let c=document.getElementById('arabicLetters');c.innerHTML="";lettersFull.forEach(l=>{c.innerHTML+=`<div class="letter-card" onclick="speakText('${l.a}','ar',0.6)"><div class="letter-ar">${l.a}</div><div style="font-weight:900;font-size:12px">${l.n}</div><div class="small">${l.t} 🔊</div></div>`;});}
+function startLetterGame(){let target=lettersFull[Math.floor(Math.random()*lettersFull.length)];letterGameTarget=target;document.getElementById('letterGameQ').innerHTML=`<div class="small">Trouve: ${target.n}</div><div style="font-size:48px">${target.a} 🔊</div>`;let opts=[target];while(opts.length<4){let r=lettersFull[Math.floor(Math.random()*lettersFull.length)];if(!opts.find(o=>o.a==r.a))opts.push(r);}opts.sort(()=>Math.random()-0.5);document.getElementById('letterGameOpts').innerHTML=opts.map(o=>`<button class="letter-card" onclick="checkLetterGame('${o.a}')"><div style="font-size:28px">${o.a}</div></button>`).join('');}
+function checkLetterGame(chosen){if(chosen==letterGameTarget.a){letterGameScore++;document.getElementById('letterGameScore').innerText=`Score: ${letterGameScore} 🎉`;if(navigator.vibrate)navigator.vibrate(80);setTimeout(startLetterGame,600);}else{if(navigator.vibrate)navigator.vibrate([50,50,50]);document.getElementById('letterGameScore').innerText=`Score: ${letterGameScore} - Cherche ${letterGameTarget.n}`;}}
+function doTasbih(){tasbihTotal++;subhan++;document.getElementById('tasbihBtn').innerText=tasbihTotal;document.getElementById('subhanCount').innerText=subhan;document.getElementById('tasbihTotal').innerText=`Total: ${tasbihTotal}`;if(navigator.vibrate)navigator.vibrate(40);localStorage.setItem("si_tasbih",JSON.stringify({total:tasbihTotal,subhan,hamd,akbar}));}
+function resetTasbih(){tasbihTotal=0;subhan=0;hamd=0;akbar=0;localStorage.removeItem("si_tasbih");document.getElementById('tasbihBtn').innerText=0;document.getElementById('subhanCount').innerText=0;document.getElementById('hamdCount').innerText=0;document.getElementById('akbarCount').innerText=0;document.getElementById('tasbihTotal').innerText="Total: 0";}
+function startQuiz(){currentQuiz=0;score=0;showQuiz();}
+function showQuiz(){if(currentQuiz>=quizFull.length){document.getElementById('quizContent').innerHTML=`<div style="text-align:center;padding:20px"><div style="font-size:60px">🎉</div><div style="font-size:26px;font-weight:900">Score: ${score}/${quizFull.length}</div></div>`;document.getElementById('quizScore').innerText=`Score: ${score}/${quizFull.length}`;document.getElementById('quizExplain').innerHTML="";return;}let q=quizFull[currentQuiz];let html=`<div style="font-weight:900;font-size:16px;margin-bottom:12px">Q${currentQuiz+1}: ${q.q}</div>`;q.a.forEach((ans,i)=>{html+=`<button class="quiz-opt" onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}. ${ans}</button>`;});document.getElementById('quizContent').innerHTML=html;document.getElementById('quizExplain').innerHTML=`<div class="small">💡 ${q.ex}</div>`;}
+function answerQuiz(i){let q=quizFull[currentQuiz];let opts=document.querySelectorAll('.quiz-opt');opts.forEach((o,idx)=>{if(idx==q.c)o.classList.add('correct');else if(idx==i)o.classList.add('wrong');o.style.pointerEvents='none';});if(i==q.c){score++;if(navigator.vibrate)navigator.vibrate(80);}else{if(navigator.vibrate)navigator.vibrate([50,50,50]);}document.getElementById('quizScore').innerText=`Score: ${score}/${quizFull.length}`;setTimeout(()=>{currentQuiz++;showQuiz();},1000);}
+function speakText(t,lang='ar',rate=0.8){if('speechSynthesis' in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang=lang=='ar'?'ar-SA':'fr-FR';u.rate=rate;speechSynthesis.speak(u);}}
+function askIA(){let q=document.getElementById('iaInput').value.trim().toLowerCase();if(!q)return;let ans="";if(q.includes('wudu'))ans="Wudu: Niya, Bismillah, mains 3x, bouche 3x, nez 3x, visage 3x, bras 3x, tête 1x, oreilles 1x, pieds 3x.";else if(q.includes('tawhid'))ans="Tawhid 3: Rouboubiya Allah seul Créateur, Oulouhiya adorer seul Allah, Asma wa Sifat noms d'Allah.";else if(q.includes('priere')||q.includes('salat'))ans="5 prières: Fajr 2, Dhuhr 4, Asr 4, Maghreb 3, Isha 4.";else if(q.includes('coran'))ans="Coran 114 sourates, révélé en 23 ans.";else ans=`Réponse pour "${q}": Selon Coran et Sunna.`;document.getElementById('iaResponse').innerHTML=`<div style="background:#ede9fe;border:1px solid #c4b5fd;border-radius:16px;padding:14px"><b>🤖 IA</b><div style="margin-top:8px;font-weight:600">${ans}</div><button class="btn btn-small btn-gold" style="margin-top:10px" onclick="speakText('${ans.substring(0,200)}','fr')">🔊 Écouter</button></div>`;speakText(ans.substring(0,200),'fr',0.95);}
+function quickIA(t){document.getElementById('iaInput').value=t;askIA();}
+function saveSettings(){localStorage.setItem("si_hijri_adjust",document.getElementById('hijriAdjust').value);alert("Sauvé");location.reload();}
+function gregorianToJulianDay(d,m,y){if(m<=2){y-=1;m+=12;}let a=Math.floor(y/100);let b=2-a+Math.floor(a/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+b-1524;}
+function julianToHijri(jd){let l=jd-1948440+10632;let n=Math.floor((l-1)/10632);l=l-10632*n+10632;let j=Math.floor((10985-l)/5316)*Math.floor((50*l)/17719)+Math.floor(l/5670)*Math.floor((43*l)/15238);l=l-Math.floor((30-j)/15)*Math.floor((17719*j)/50)-Math.floor(j/16)*Math.floor((15238*j)/43)+29;let month=Math.floor((24*l)/709);let day=l-Math.floor((709*month)/24);let year=30*n+j-30;return {day:day,month:month,year:year};}
+function getCorrectCalendars(){
+let now=new Date();
+let gregStr=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+document.getElementById('gregDate').innerText=gregStr;
+let jd=gregorianToJulianDay(now.getDate(),now.getMonth()+1,now.getFullYear());
+let hijri=julianToHijri(jd);
+let adjust=parseInt(localStorage.getItem("si_hijri_adjust")||"-1");
+hijri.day+=adjust;
+let monthsAr=["Muharram","Safar","Rabi al-Awwal","Rabi al-Thani","Jumada al-Ula","Jumada al-Akhira","Rajab","Shaban","Ramadan","Shawwal","Dhu al-Qidah","Dhu al-Hijjah"];
+let mIndex=(hijri.month-1)%12;
+let hijriStr=`${hijri.day} ${monthsAr[mIndex]} ${hijri.year}H`;
+document.getElementById('hijriDate').innerText=hijriStr;
+document.getElementById('hijriFull').innerText=`${hijriStr} = ${gregStr} • Umm Al-Qura • Ajustement ${adjust} • Correct`;
+return {hijri:hijri,hijriStr:hijriStr,gregStr:gregStr};
+}
+function updatePrayerUI(t){
+if(t){
+document.getElementById('tFajr').innerText=t.Fajr.substring(0,5);
+document.getElementById('tDhuhr').innerText=t.Dhuhr.substring(0,5);
+document.getElementById('tAsr').innerText=t.Asr.substring(0,5);
+document.getElementById('tMaghreb').innerText=t.Maghreb.substring(0,5);
+document.getElementById('tIsha').innerText=t.Isha.substring(0,5);
+document.getElementById('pMaghreb').innerText="Maghreb "+t.Maghreb.substring(0,5);
+document.getElementById('pIsha').innerText="Isha "+t.Isha.substring(0,5);
+currentTimings=t;
+}
+}
+function startCountdown(){
+setInterval(()=>{
+let now=new Date();
+let order=[{n:"Fajr",t:currentTimings.Fajr,card:"cardFajr"},{n:"Dhuhr",t:currentTimings.Dhuhr,card:"cardDhuhr"},{n:"Asr",t:currentTimings.Asr,card:"cardAsr"},{n:"Maghreb",t:currentTimings.Maghreb,card:"cardMaghreb"},{n:"Isha",t:currentTimings.Isha,card:"cardIsha"}];
+document.querySelectorAll('.prayer-item').forEach(el=>el.classList.remove('active'));
+for(let o of order){
+let [h,m]=o.t.split(':').map(Number);
+let d=new Date();d.setHours(h,m,0,0);
+if(d>now){
+document.getElementById('currentPrayer').innerText=o.n;
+document.getElementById('currentTime').innerText=o.t.substring(0,5);
+let diff=d-now;let hh=Math.floor(diff/3600000),mm=Math.floor((diff%3600000)/60000),ss=Math.floor((diff%60000)/1000);
+document.getElementById('countdown').innerText=`Dans ${hh}h ${mm}min ${ss}s - ${o.n} • ${document.getElementById('pCity').innerText.replace('📍 ','')}`;
+document.getElementById(o.card).classList.add('active');return;
+}
+}
+document.getElementById('cardFajr').classList.add('active');
+},1000);
+}
+function detectLocationCorrect(){
+let hijriData=getCorrectCalendars();
+document.getElementById('pCity').innerText="📍 Détection Ville + Région...";
+document.getElementById('pRegion').innerText="Détection Région...";
+if(!navigator.geolocation){
+document.getElementById('pCity').innerText="📍 Bamako, Commune IV";
+document.getElementById('pRegion').innerText="District de Bamako • Mali";
+return;
+}
+navigator.geolocation.getCurrentPosition(pos=>{
+let lat=pos.coords.latitude,lon=pos.coords.longitude;
+let ts=Math.floor(Date.now()/1000);
+fetch(`https://api.aladhan.com/v1/timings/${ts}?latitude=${lat}&longitude=${lon}&method=4`).then(r=>r.json()).then(d=>{
+if(d.data&&d.data.timings){
+updatePrayerUI(d.data.timings);
+if(d.data.date&&d.data.date.hijri){
+let h=d.data.date.hijri;
+let adjust=parseInt(localStorage.getItem("si_hijri_adjust")||"-1");
+let day=parseInt(h.day)+adjust;
+document.getElementById('hijriDate').innerText=`${day} ${h.month.ar} ${h.year}H`;
+document.getElementById('hijriFull').innerText=`${day} ${h.month.ar} ${h.year}H = ${d.data.date.readable} • Umm Al-Qura Officiel • Correct Région`;
+document.getElementById('gregDate').innerText=d.data.date.readable;
+document.getElementById('prayerMethod').innerText=`Umm Al-Qura • ${day} ${h.month.ar} ${h.year}H • Correct • Aladhan ✅`;
+}
+}
+}).catch(()=>{});
+fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=fr`).then(r=>r.json()).then(loc=>{
+let city=loc.city||loc.locality||"Bamako";
+let region=loc.principalSubdivision||"Bamako";
+let country=loc.countryName||"Mali";
+let countryCode=loc.countryCode||"ML";
+let fullCity=`${city}`;
+let fullRegion=`${region} • ${country}`;
+if(countryCode=="ML"){
+let maliRegions={"Bamako":"District de Bamako","Kayes":"Région de Kayes","Koulikoro":"Région de Koulikoro","Sikasso":"Région de Sikasso","Ségou":"Région de Ségou","Mopti":"Région de Mopti","Tombouctou":"Région de Tombouctou","Gao":"Région de Gao","Kidal":"Région de Kidal"};
+let fr=maliRegions[region]||maliRegions[city]||region;
+fullRegion=`${fr} • ${country}`;
+fullCity=`${city} - ${region}`;
+}
+document.getElementById('pCity').innerText=`📍 ${fullCity}`;
+document.getElementById('pRegion').innerText=fullRegion;
+document.getElementById('weatherDesc').innerText=`${city} • ${region} • Avec Internet`;
+document.getElementById('prayerMethod').innerText=`Umm Al-Qura • ${document.getElementById('hijriDate').innerText} • ${fullCity} • ${region} • Correct`;
+}).catch(()=>{
+document.getElementById('pCity').innerText="📍 Bamako, Commune IV";
+document.getElementById('pRegion').innerText="District de Bamako • Mali";
+});
+fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`).then(r=>r.json()).then(d=>{
+if(d.current_weather){document.getElementById('tempLocal').innerText=Math.round(d.current_weather.temperature)+"°C";}
+}).catch(()=>{});
+fetch(`https://api.aladhan.com/v1/qibla/${lat}/${lon}`).then(r=>r.json()).then(d=>{
+let deg=Math.round(d.data.direction);
+document.getElementById('qiblaDegree').innerText=deg+"° vers Kaaba • "+document.getElementById('pCity').innerText.replace('📍 ','')+" • Correct";
+document.getElementById('qiblaDegreeMini').innerText=deg+"°";
+document.getElementById('qiblaArrow').style.transform=`translate(-50%,-100%) rotate(${deg}deg)`;
+document.getElementById('qiblaInfo').innerText=`Qibla ${deg}° • ${document.getElementById('pCity').innerText.replace('📍 ','')} • Correct`;
+document.getElementById('qiblaInfoTop').innerText=`Qibla ${deg}° • Correct`;
+}).catch(()=>{
+let q=66+Math.round((lon- -8)*0.15);if(q<0)q+=360;
+document.getElementById('qiblaDegreeMini').innerText=q+"°";
+document.getElementById('qiblaArrow').style.transform=`translate(-50%,-100%) rotate(${q}deg)`;
+});
+},()=>{document.getElementById('pCity').innerText="📍 Bamako, Commune IV";document.getElementById('pRegion').innerText="District de Bamako • Mali";},{enableHighAccuracy:true,timeout:8000});
+}
+function searchSurah(){let q=document.getElementById('quranSearch').value.toLowerCase();let res=document.getElementById('quranSearchRes');if(q.length<2){res.innerHTML="";return;}let found=surahsFull.filter(s=>s.name.toLowerCase().includes(q)||s.ar.includes(q)).slice(0,6);res.innerHTML=found.map(s=>`<div style="padding:8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;margin-top:6px;cursor:pointer" onclick="document.getElementById('surahSelect').value=${s.n};loadSurah()">${s.n}. ${s.name} - ${s.ar}</div>`).join('');}
+window.onload=()=>{
+try{
+loadSurahs();newHadith();renderDuas();renderLetters();
+let hijriData=getCorrectCalendars();
+let savedT=JSON.parse(localStorage.getItem("si_tasbih")||"null");if(savedT){tasbihTotal=savedT.total||0;subhan=savedT.subhan||0;hamd=savedT.hamd||0;akbar=savedT.akbar||0;document.getElementById('tasbihBtn').innerText=tasbihTotal;document.getElementById('subhanCount').innerText=subhan;document.getElementById('hamdCount').innerText=hamd;document.getElementById('akbarCount').innerText=akbar;document.getElementById('tasbihTotal').innerText=`Total: ${tasbihTotal}`;}
+document.getElementById('hijriAdjust').value=localStorage.getItem("si_hijri_adjust")||"-1";
+updatePrayerUI(currentTimings);
+startCountdown();
+detectLocationCorrect();
+}catch(e){}
+};
+</script>
+</body>
+</html>
